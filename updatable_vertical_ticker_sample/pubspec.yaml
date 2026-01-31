@@ -1,7 +1,7 @@
-name: updatable_ticker_sample
-description: "A sample app demonstrating the Flutter Updatable Ticker library."
+name: updatable_vertical_ticker_sample
+description: "A sample app demonstrating the Flutter Updatable Vertical Ticker library."
 publish_to: 'none'
-version: 1.0.1+1
+version: 1.0.0+1
 
 environment:
   sdk: ">=2.19.6 <4.0.0"
@@ -13,8 +13,8 @@ dependencies:
 
   # Local dependency to the Ticker library
   ipsum: ^1.0.1
-  updatable_ticker:
-    path: ../updatable_ticker_library
+  updatable_vertical_ticker:
+    path: ../updatable_vertical_ticker_library
 
 dev_dependencies:
   flutter_test:
