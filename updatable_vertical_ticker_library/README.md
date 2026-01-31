@@ -2,7 +2,7 @@
 
 A flutter widget for a smoothly scrolling vertical text ticker that integrates text updates cleanly so that scrolling is glitch-free and uninterrupted. The main feature is that all text updates take place in the area of the text buffer that is not yet visible, so that the text does not disrupt (glitch effect) during display.
 
-![](https://github.com/user-attachments/assets/6e6fe6b7-72a2-4b24-ac7b-80827f504a7b)
+![](https://github.com/user-attachments/assets/4f565e1e-d072-4c83-a770-6a9103c73a0b)
 
 # Getting Started
 
