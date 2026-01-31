@@ -28,7 +28,7 @@ Built with **CustomPainter + Ticker** for maximum performance.
 
 📸 Preview
 
-![ticker-demo](https://github.com/user-attachments/assets/6e6fe6b7-72a2-4b24-ac7b-80827f504a7b)
+![ticker-demo](https://github.com/user-attachments/assets/4f565e1e-d072-4c83-a770-6a9103c73a0b)
 
 
 
