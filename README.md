@@ -28,10 +28,11 @@ Built with **CustomPainter + Ticker** for maximum performance.
 
 📸 Preview
 
-![ticker-demo](https://github.com/user-attachments/assets/4f565e1e-d072-4c83-a770-6a9103c73a0b)
+https://github.com/user-attachments/assets/4f565e1e-d072-4c83-a770-6a9103c73a0b
 
 ## Video of LED Variant
-![led-ticker-demo](https://github.com/user-attachments/assets/2580b18d-c750-44c0-900b-6a5a41250a27)
+https://github.com/user-attachments/assets/2580b18d-c750-44c0-900b-6a5a41250a27
+
 
 ## Project Structure
 
