@@ -68,7 +68,7 @@ or if loading from pub.dev:
 
 ```yaml
 dependencies:
-  updatable_vertical_ticker: ^1.0.1
+  updatable_vertical_ticker: ^1.1.1
 ```
 
 ### Running the Sample App
@@ -81,4 +81,4 @@ flutter run
 
 ## License
 
-This project is licensed under the BSD 3-Clause License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
