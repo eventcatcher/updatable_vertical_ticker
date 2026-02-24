@@ -9,12 +9,15 @@ library;
 /// 3. [cyclePause]  – The text scrolls out of the visible area at the top.
 
 enum TickerPhase {
-  /// The text scrolls into the visible area from the bottom.
-  entering, // Text kommt von unten rein
-  /// blaaa
-  holding, // The text remains centered and fully visible.
-  /// blaaa
-  exiting, // The current text scrolls out at the top while the next line scrolls in
-  /// blaaa
-  cyclePause, // The text scrolls out of the visible area at the top.
+  /// text scrolls into the visible area from the bottom
+  entering,
+
+  /// text remains centered and fully visible
+  holding,
+
+  /// current text scrolls out at the top while the next line scrolls in
+  exiting,
+
+  /// text scrolls out of the visible area at the top
+  cyclePause,
 }

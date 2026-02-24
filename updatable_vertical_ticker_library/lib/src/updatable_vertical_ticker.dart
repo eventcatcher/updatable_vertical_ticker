@@ -1,8 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
 import 'package:updatable_vertical_ticker/src/ticker_phase.dart';
 import 'package:updatable_vertical_ticker/src/vertical_ticker_painter.dart';
+
+/// typedef
+typedef VerticalTickerItemBuilder = Widget Function(
+  BuildContext context,
+  String? currentText,
+  String? nextText,
+  double progress,
+  TickerPhase phase,
+);
 
 /// A vertical ticker that scrolls text lines upward continuously.
 ///
@@ -11,10 +21,10 @@ import 'package:updatable_vertical_ticker/src/vertical_ticker_painter.dart';
 ///
 /// Updates to [texts] are applied only after the current cycle finishes.
 class UpdatableVerticalTicker extends StatefulWidget {
-  /// List of texts to scroll through.
+  /// List of texts to scroll through
   final List<String> texts;
 
-  /// Duration for scrolling from one line to the next.
+  /// Duration for scrolling from one line to the next
   final Duration scrollDuration;
 
   /// Delay before the next line starts scrolling
@@ -23,15 +33,16 @@ class UpdatableVerticalTicker extends StatefulWidget {
   /// Delay before the next cycle starts (blank time)
   final Duration cyclePause;
 
-  /// Text style used for rendering.
+  /// Text style used for rendering
   final TextStyle textStyle;
 
-  /// get max width of the text.
+  /// get max width of the text
   final Function(int width)? getMaxWidth;
 
+  /// Optional custom renderer
+  final VerticalTickerItemBuilder? itemBuilder;
+
   /// Creates an [UpdatableVerticalTicker].
-  ///
-  /// All parameters are required.
   const UpdatableVerticalTicker({
     super.key,
     required this.texts,
@@ -40,6 +51,7 @@ class UpdatableVerticalTicker extends StatefulWidget {
     required this.cyclePause,
     required this.textStyle,
     this.getMaxWidth,
+    this.itemBuilder,
   });
 
   @override
@@ -169,13 +181,24 @@ class _UpdatableVerticalTickerState extends State<UpdatableVerticalTicker>
         ? _activeTexts[_currentIndex + 1]
         : null;
 
+    // CUSTOM BUILDER
+    if (widget.itemBuilder != null) {
+      return widget.itemBuilder!(
+        context,
+        currentText,
+        nextText,
+        _progress,
+        _phase,
+      );
+    }
+
     // Determine exact line height
     TextPainter tp = TextPainter(
       text: TextSpan(text: 'Hg', style: widget.textStyle),
       textDirection: TextDirection.ltr,
     )..layout();
 
-    final lineHeight = tp.height;
+    final double lineHeight = tp.height;
 
     if (widget.getMaxWidth != null) {
       double lineWidth = maxLineWidth;

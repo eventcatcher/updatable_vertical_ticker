@@ -42,6 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final int fontMaxSize = 80;
   final int maxLines = 8;
 
+  final bool useLedVariant = true;
+
   Orientation orientation = Orientation.portrait;
   DateTime lastUpdate = DateTime.now();
   List<String> updatableText = [];
@@ -377,35 +379,61 @@ class _MyHomePageState extends State<MyHomePage> {
                                       color: Colors.lightBlueAccent,
                                       child: initialized == true &&
                                               updatableText.isNotEmpty
-                                          ? UpdatableVerticalTicker(
-                                              key: ValueKey(
-                                                'UpdatableVerticalTickerExamplePage-${orientation == Orientation.portrait ? 'portrait' : 'landscape'}-$width-$fontSize',
-                                              ),
-                                              texts: updatableText,
-                                              scrollDuration: Duration(
-                                                  milliseconds: scrollDuration),
-                                              linePause:
-                                                  Duration(seconds: linePause),
-                                              cyclePause:
-                                                  Duration(seconds: cyclePause),
-                                              textStyle: TextStyle(
-                                                fontFamily:
-                                                    'whiteCupertino subtitle',
-                                                fontSize: fontSize,
-                                                color: Colors.black,
-                                              ),
-                                              getMaxWidth: (int width) {
-                                                SchedulerBinding.instance
-                                                    .addPostFrameCallback(
-                                                        (_) async {
-                                                  if (mounted) {
-                                                    setState(() {
-                                                      maxWidth = width;
+                                          ? useLedVariant
+                                              ? UpdatableVerticalLedTicker(
+                                                  key: ValueKey(
+                                                    'UpdatableVerticalTickerExamplePage-${orientation == Orientation.portrait ? 'portrait' : 'landscape'}-$width-$fontSize',
+                                                  ),
+                                                  texts: updatableText,
+                                                  scrollDuration: Duration(
+                                                      milliseconds:
+                                                          scrollDuration),
+                                                  linePause: Duration(
+                                                      seconds: linePause),
+                                                  cyclePause: Duration(
+                                                      seconds: cyclePause),
+                                                  getMaxWidth: (int width) {
+                                                    SchedulerBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) async {
+                                                      if (mounted) {
+                                                        setState(() {
+                                                          maxWidth = width;
+                                                        });
+                                                      }
                                                     });
-                                                  }
-                                                });
-                                              },
-                                            )
+                                                  },
+                                                )
+                                              : UpdatableVerticalTicker(
+                                                  key: ValueKey(
+                                                    'UpdatableVerticalTickerExamplePage-${orientation == Orientation.portrait ? 'portrait' : 'landscape'}-$width-$fontSize',
+                                                  ),
+                                                  texts: updatableText,
+                                                  scrollDuration: Duration(
+                                                      milliseconds:
+                                                          scrollDuration),
+                                                  linePause: Duration(
+                                                      seconds: linePause),
+                                                  cyclePause: Duration(
+                                                      seconds: cyclePause),
+                                                  textStyle: TextStyle(
+                                                    fontFamily:
+                                                        'whiteCupertino subtitle',
+                                                    fontSize: fontSize,
+                                                    color: Colors.black,
+                                                  ),
+                                                  getMaxWidth: (int width) {
+                                                    SchedulerBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) async {
+                                                      if (mounted) {
+                                                        setState(() {
+                                                          maxWidth = width;
+                                                        });
+                                                      }
+                                                    });
+                                                  },
+                                                )
                                           : SizedBox(),
                                     ),
                                   ),

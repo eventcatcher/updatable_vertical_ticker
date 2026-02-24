@@ -1,9 +1,8 @@
-# Updatable Vertical Ticker
+# Updatable Vertical LED Ticker
 
-A flutter widget for a smoothly scrolling vertical text ticker that integrates text updates cleanly so that scrolling is glitch-free and uninterrupted. The main feature is that all text updates take place in the area of the text buffer that is not yet visible, so that the text does not disrupt (glitch effect) during display.
+A flutter widget for a smoothly scrolling vertical text ticker (LED variant) that integrates text updates cleanly so that scrolling is glitch-free and uninterrupted. The main feature is that all text updates take place in the area of the text buffer that is not yet visible, so that the text does not disrupt (glitch effect) during display.
 
 ![](https://github.com/user-attachments/assets/4f565e1e-d072-4c83-a770-6a9103c73a0b)
-
 
 # Getting Started
 
@@ -39,13 +38,19 @@ import 'package:updatable_vertical_ticker/updatable_vertical_ticker.dart';
 The package has a few properties to configure, it's simple.
 
 ```
-List<String> texts;                     // List of texts to scroll through.
-Duration scrollDuration;                // Duration for scrolling from one line to the next.
-Duration linePause;                     // Delay before the next line starts scrolling
-Duration cyclePause;                    // Delay before the next cycle starts (blank time)
-TextStyle textStyle;                    // Text style used for rendering.
-Function(int width)? getMaxWidth;       // optionally callback to get max width of the text.
-VerticalTickerItemBuilder? itemBuilder  // optionally custom itemBuilder.
+List<String> texts;
+
+int modules;                      // number of 8x8 LED modules
+bool useProportionalFont;         // use proportional font with different glyph widths
+bool center;                      // center text
+double ledSize;                   // led dot size in pixels
+double ledGap;                    // led gap between dots in pixels
+Color onColor;                    // color of LED is on
+Color offColor;                   // color of LED is off
+Duration scrollDuration;          // Duration for scrolling from one line to the next
+Duration linePause;               // Delay before the next line starts scrolling
+Duration cyclePause;              // Delay before the next cycle starts (blank time)
+Function(int width)? getMaxWidth; // get max width of the text
 ```
 
 # Example
@@ -69,13 +74,13 @@ class ExamplePageState extends State<ExamplePage> {
         child: Container(
           color: Colors.lightBlueAccent,
           width: 800.0,
-          child: UpdatableVerticalTicker(
+          child: UpdatableVerticalLedTicker(
             key: ValueKey(
               'ExamplePage',
             ),
             texts: [
-              'This is a UpdatableVerticalTicker Demo',
-              'A flutter widget for a smoothly scrolling text ticker',
+              'This is a UpdatableVerticalLedTicker Demo',
+              'A flutter widget for a smoothly scrolling LED text ticker',
               'Scrolling is glitch-free and uninterrupted',
             ],
             scrollDuration: Duration(milliseconds: 400),

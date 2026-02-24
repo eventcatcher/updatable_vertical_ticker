@@ -22,14 +22,22 @@ class _UpdatableVerticalTickerExamplePageState
   final double borderSpace = 64;
   final int fontMinSize = 12;
   final int fontMaxSize = 80;
+  final int ledDotMinSize = 1;
+  final int ledDotMaxSize = 10;
   final int maxLines = 8;
+
+  final int modules = 21;
+  final double ledGap = 0.2;
+  final Color ledOnColor = Colors.red.shade500;
+  final Color ledOffColor = const Color(0xFF000000);
 
   Orientation orientation = Orientation.portrait;
   DateTime lastUpdate = DateTime.now();
   List<String> updatableText = [];
-  double width = 1280;
+  double width = 1024;
   double height = 768;
   double fontSize = 24.0;
+  double ledSize = 5.0;
   int maxWidth = 0;
   int scrollDuration = 400;
   int linePause = 1;
@@ -37,6 +45,7 @@ class _UpdatableVerticalTickerExamplePageState
   int rng = -1;
   int seconds = 0;
   bool initialized = false;
+  bool showLedVariant = false;
 
   @override
   void initState() {
@@ -64,13 +73,17 @@ class _UpdatableVerticalTickerExamplePageState
     return min + Random().nextInt(max - min);
   }
 
-  List<String> textGenerator() {
+  List<String> textGenerator({required bool showLedVariant}) {
     final List<String> newTexts = ['-- Start --'];
     final int lines = random(3, 6);
 
     for (int i = 1; i < lines; i++) {
       final int rng = random(5, 10);
-      newTexts.add(Ipsum().words(rng));
+      String line = Ipsum().words(rng);
+      if (showLedVariant == true && line.length > modules) {
+        line = line.substring(0, modules);
+      }
+      newTexts.add(line);
     }
     newTexts.add('-- End --');
 
@@ -85,7 +98,7 @@ class _UpdatableVerticalTickerExamplePageState
         if (mounted) {
           setState(() {
             lastUpdate = DateTime.now();
-            updatableText = textGenerator();
+            updatableText = textGenerator(showLedVariant: showLedVariant);
           });
         }
       });
@@ -121,25 +134,40 @@ class _UpdatableVerticalTickerExamplePageState
         if (width > minDesktopWidth) Expanded(child: SizedBox()),
         Row(
           children: [
-            SizedBox(width: 100.0, child: Text('fontSize: ')),
+            SizedBox(
+                width: 100.0,
+                child: Text(showLedVariant ? 'Dotsize' : 'FontSize: ')),
             SizedBox(
               width: 170,
               child: Slider(
-                value: fontSize,
-                min: fontMinSize.toDouble(),
-                max: fontMaxSize.toDouble(),
-                divisions: fontMaxSize - fontMinSize,
+                value: showLedVariant ? ledSize : fontSize,
+                min: showLedVariant
+                    ? ledDotMinSize.toDouble()
+                    : fontMinSize.toDouble(),
+                max: showLedVariant
+                    ? ledDotMaxSize.toDouble()
+                    : fontMaxSize.toDouble(),
+                divisions: showLedVariant
+                    ? ledDotMaxSize - ledDotMinSize
+                    : fontMaxSize - fontMinSize,
                 thumbColor: Colors.red.shade700,
                 activeColor: Colors.green.shade200,
                 inactiveColor: Colors.grey.shade700,
                 onChanged: (double value) {
                   setState(() {
-                    fontSize = value;
+                    if (showLedVariant) {
+                      ledSize = value;
+                    } else {
+                      fontSize = value;
+                    }
                   });
                 },
               ),
             ),
-            SizedBox(width: 80.0, child: Text('$fontSize px')),
+            SizedBox(
+              width: 80.0,
+              child: Text(showLedVariant ? '$ledSize px' : '$fontSize px'),
+            ),
           ],
         ),
       ];
@@ -228,6 +256,42 @@ class _UpdatableVerticalTickerExamplePageState
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Wrap(
+                            children: [
+                              SizedBox(
+                                  width: 142,
+                                  height: 32.0,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        'Options: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )),
+                              SizedBox(
+                                width: 250.0,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Checkbox(
+                                      value: showLedVariant,
+                                      onChanged: (bool? mode) {
+                                        setState(() {
+                                          updatableText = textGenerator(
+                                              showLedVariant: !showLedVariant);
+                                          showLedVariant = !showLedVariant;
+                                        });
+                                      },
+                                    ),
+                                    Text('display LED variant'),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16.0),
                           Wrap(
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
@@ -359,35 +423,68 @@ class _UpdatableVerticalTickerExamplePageState
                                       color: Colors.lightBlueAccent,
                                       child: initialized == true &&
                                               updatableText.isNotEmpty
-                                          ? UpdatableVerticalTicker(
-                                              key: ValueKey(
-                                                'UpdatableVerticalTickerExamplePage-${orientation == Orientation.portrait ? 'portrait' : 'landscape'}-$width-$fontSize',
-                                              ),
-                                              texts: updatableText,
-                                              scrollDuration: Duration(
-                                                  milliseconds: scrollDuration),
-                                              linePause:
-                                                  Duration(seconds: linePause),
-                                              cyclePause:
-                                                  Duration(seconds: cyclePause),
-                                              textStyle: TextStyle(
-                                                fontFamily:
-                                                    'whiteCupertino subtitle',
-                                                fontSize: fontSize,
-                                                color: Colors.black,
-                                              ),
-                                              getMaxWidth: (int width) {
-                                                SchedulerBinding.instance
-                                                    .addPostFrameCallback(
-                                                        (_) async {
-                                                  if (mounted) {
-                                                    setState(() {
-                                                      maxWidth = width;
+                                          ? showLedVariant
+                                              ? UpdatableVerticalLedTicker(
+                                                  key: ValueKey(
+                                                    'UpdatableVerticalTickerExamplePage-${orientation == Orientation.portrait ? 'portrait' : 'landscape'}-$width-${showLedVariant ? ledSize : fontSize}',
+                                                  ),
+                                                  texts: updatableText,
+                                                  modules: modules,
+                                                  useProportionalFont: true,
+                                                  center: true,
+                                                  ledSize: ledSize,
+                                                  ledGap: ledGap,
+                                                  onColor: ledOnColor,
+                                                  offColor: ledOffColor,
+                                                  scrollDuration: Duration(
+                                                      milliseconds:
+                                                          scrollDuration),
+                                                  linePause: Duration(
+                                                      seconds: linePause),
+                                                  cyclePause: Duration(
+                                                      seconds: cyclePause),
+                                                  // getMaxWidth: (int width) {
+                                                  //   SchedulerBinding.instance
+                                                  //       .addPostFrameCallback(
+                                                  //           (_) async {
+                                                  //     if (mounted) {
+                                                  //       setState(() {
+                                                  //         maxWidth = width;
+                                                  //       });
+                                                  //     }
+                                                  //   });
+                                                  // },
+                                                )
+                                              : UpdatableVerticalTicker(
+                                                  key: ValueKey(
+                                                    'UpdatableVerticalTickerExamplePage-${orientation == Orientation.portrait ? 'portrait' : 'landscape'}-$width-$fontSize',
+                                                  ),
+                                                  texts: updatableText,
+                                                  scrollDuration: Duration(
+                                                      milliseconds:
+                                                          scrollDuration),
+                                                  linePause: Duration(
+                                                      seconds: linePause),
+                                                  cyclePause: Duration(
+                                                      seconds: cyclePause),
+                                                  textStyle: TextStyle(
+                                                    fontFamily:
+                                                        'whiteCupertino subtitle',
+                                                    fontSize: fontSize,
+                                                    color: Colors.black,
+                                                  ),
+                                                  getMaxWidth: (int width) {
+                                                    SchedulerBinding.instance
+                                                        .addPostFrameCallback(
+                                                            (_) async {
+                                                      if (mounted) {
+                                                        setState(() {
+                                                          maxWidth = width;
+                                                        });
+                                                      }
                                                     });
-                                                  }
-                                                });
-                                              },
-                                            )
+                                                  },
+                                                )
                                           : SizedBox(),
                                     ),
                                   ),

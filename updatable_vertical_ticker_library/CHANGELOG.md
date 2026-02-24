@@ -1,3 +1,7 @@
+## 1.1.0
+\- add LED matrix variant
+
+
 ## 1.0.1
 \- update license to MIT
 

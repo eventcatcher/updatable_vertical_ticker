@@ -6,24 +6,24 @@ import 'package:updatable_vertical_ticker/src/ticker_phase.dart';
 /// - currentText scrolls upward
 /// - nextText scrolls in from below
 class VerticalTickerPainter extends CustomPainter {
-  /// Currently visible text.
+  /// Currently visible text
   final String? currentText;
 
-  /// Next text entering from below.
+  /// Next text entering from below
   final String? nextText;
 
   /// current phase of the vertical scrolling animation
   final TickerPhase phase;
 
-  /// Scroll progress (0.0 → 1.0).
+  /// Scroll progress (0.0 → 1.0)
   final double progress;
 
-  /// Text style.
+  /// Text style
   final TextStyle textStyle;
 
-  /// Creates a [VerticalTickerPainter].
+  /// Creates a [VerticalTickerPainter]
   ///
-  /// All parameters are required and must not be null.
+  /// All parameters are required and must not be null
   VerticalTickerPainter({
     required this.currentText,
     required this.nextText,
@@ -75,7 +75,7 @@ class VerticalTickerPainter extends CustomPainter {
       )..layout();
 
   double _measureLineHeight() {
-    final tp = _painter('Hg');
+    final TextPainter tp = _painter('Hg');
     return tp.height;
   }
 
