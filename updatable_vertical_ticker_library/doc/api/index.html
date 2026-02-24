@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="updatable_vertical_ticker API docs, for the Dart programming language.">
+  <title>updatable_vertical_ticker - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+  
+</head>
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+<div id="overlay-under-drawer"></div>
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/eventcatcher/updatable_vertical_ticker">updatable_vertical_ticker package</a></li>
+  </ol>
+  <div class="self-name">updatable_vertical_ticker</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="updatable-vertical-ticker">Updatable Vertical Ticker</h1>
+<p>A flutter widget for a smoothly scrolling vertical text ticker that integrates text updates cleanly so that scrolling is glitch-free and uninterrupted. The main feature is that all text updates take place in the area of the text buffer that is not yet visible, so that the text does not disrupt (glitch effect) during display.</p>
+<p><img src="https://github.com/user-attachments/assets/4f565e1e-d072-4c83-a770-6a9103c73a0b" alt=""></p>
+<h2 id="video-of-led-variant">Video of LED Variant</h2>
+<p><img src="https://github.com/user-attachments/assets/2580b18d-c750-44c0-900b-6a5a41250a27" alt=""></p>
+<h1 id="getting-started">Getting Started</h1>
+<p>Add this to your package's <code>pubspec.yaml</code> file for local testing:</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  updatable_vertical_ticker:
+    path: path/to/updatable_vertical_ticker_library
+</code></pre>
+<p>or if loading from pub.dev:</p>
+<pre class="language-yaml"><code class="language-yaml">dependencies:
+  updatable_vertical_ticker: ^1.1.0
+</code></pre>
+<p>or (better) run this command:</p>
+<pre class="language-dart"><code>$ flutter pub add updatable_vertical_ticker
+</code></pre>
+<h1 id="usage">Usage</h1>
+<p>Then you just have to import the package with</p>
+<pre class="language-dart"><code>import 'package:updatable_vertical_ticker/updatable_vertical_ticker.dart';
+</code></pre>
+<h1 id="properties">Properties</h1>
+<p>The package has a few properties to configure, it's simple.</p>
+<pre class="language-dart"><code>List&lt;String&gt; texts;                     // List of texts to scroll through.
+Duration scrollDuration;                // Duration for scrolling from one line to the next.
+Duration linePause;                     // Delay before the next line starts scrolling
+Duration cyclePause;                    // Delay before the next cycle starts (blank time)
+TextStyle textStyle;                    // Text style used for rendering.
+Function(int width)? getMaxWidth;       // optionally callback to get max width of the text.
+VerticalTickerItemBuilder? itemBuilder  // optionally custom itemBuilder.
+</code></pre>
+<h1 id="example">Example</h1>
+<p>This is a small example:</p>
+<pre class="language-dart"><code>import 'package:flutter/material.dart';
+import 'package:updatable_vertical_ticker/updatable_vertical_ticker.dart';
+
+class ExamplePage extends StatefulWidget {
+  const ExamplePage({super.key});
+
+  @override
+  State&lt;ExamplePage&gt; createState() =&gt; ExamplePageState();
+}
+
+class ExamplePageState extends State&lt;ExamplePage&gt; {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Center(
+        child: Container(
+          color: Colors.lightBlueAccent,
+          width: 800.0,
+          child: UpdatableVerticalTicker(
+            key: ValueKey(
+              'ExamplePage',
+            ),
+            texts: [
+              'This is a UpdatableVerticalTicker Demo',
+              'A flutter widget for a smoothly scrolling text ticker',
+              'Scrolling is glitch-free and uninterrupted',
+            ],
+            scrollDuration: Duration(milliseconds: 400),
+            linePause: Duration(seconds: 1),
+            cyclePause: Duration(seconds: 2),
+            textStyle: TextStyle(
+              fontFamily: 'Arial',
+              fontSize: 24.0,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+</code></pre>
+<p>But you need a little bit more if you want to update the text automatically.
+First of all, you need a source of text which updates from time to time.
+This variable is required for the connection with the texts property.</p>
+<p>In my example, I have randomly timed the actualization of texts data with a Timer.periodic, which generates demo text (lorem ipsum) with random word lengths.
+The UpdatableVerticalTicker will rebuild when alignment, width or font size changes.
+To do this, you must wrap the UpdatableVerticalTicker with OrientationBuilder, SizeChangedLayoutNotifier and a ValueKey with this data as the key for UpdatableVerticalTicker.</p>
+<p>A nice example how to do this can you find on my Github Page (part of updatable_vertical_ticker repo) here: <a href="https://github.com/eventcatcher/updatable_vertical_ticker/tree/main/updatable_vertical_ticker_sample">https://github.com/eventcatcher/updatable_vertical_ticker/tree/main/updatable_vertical_ticker_sample</a></p>
+<p>A demo video of how the ticker can look like, you can find here on my Github page: <a href="https://github.com/eventcatcher/updatable_vertical_ticker?tab=readme-ov-file#updatable-vertical-ticker-project">https://github.com/eventcatcher/updatable_vertical_ticker?tab=readme-ov-file#updatable-vertical-ticker-project</a></p>
+<h1 id="feedback">Feedback</h1>
+<p>Please feel free to <a href="https://github.com/eventcatcher/updatable_vertical_ticker/issues">give me any feedback</a> helping support this plugin !</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="updatable_vertical_ticker">
+  <span class="name"><a href="updatable_vertical_ticker">updatable_vertical_ticker</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+  </div> <!-- /.main-content -->
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="https://github.com/eventcatcher/updatable_vertical_ticker">updatable_vertical_ticker package</a></li>
+</ol>
+
+    <h5 class="hidden-xs"><span class="package-name">updatable_vertical_ticker</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="updatable_vertical_ticker">updatable_vertical_ticker</a></li>
+</ol>
+
+  </div>
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+</main>
+<footer>
+  <span class="no-break">
+    updatable_vertical_ticker
+      1.1.0
+  </span>
+  
+</footer>
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+</body>
+</html>
+
