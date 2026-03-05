@@ -1,3 +1,6 @@
+## 1.1.2
+\- fix addToProgress calculation (speed correction based on scrollDuration parameter)
+
 ## 1.1.1
 \- add actual example app
 

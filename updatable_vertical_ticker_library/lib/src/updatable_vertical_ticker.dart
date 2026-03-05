@@ -103,11 +103,14 @@ class _UpdatableVerticalTickerState extends State<UpdatableVerticalTicker>
     final Duration delta = elapsed - _lastTick;
     _lastTick = elapsed;
     _phaseElapsed += delta;
+    double addToProgress = 1000 /
+        widget.scrollDuration.inMilliseconds /
+        60 *
+        (delta.inMilliseconds / (1 / 60 * 1000));
 
     switch (_phase) {
       case TickerPhase.entering:
-        _progress +=
-            delta.inMilliseconds / widget.scrollDuration.inMilliseconds;
+        _progress += addToProgress;
 
         if (_progress >= 1.0) {
           _progress = 1.0;
@@ -125,8 +128,7 @@ class _UpdatableVerticalTickerState extends State<UpdatableVerticalTicker>
         break;
 
       case TickerPhase.exiting:
-        _progress +=
-            delta.inMilliseconds / widget.scrollDuration.inMilliseconds;
+        _progress += addToProgress;
 
         if (_progress >= 1.0) {
           _progress = 0.0;
