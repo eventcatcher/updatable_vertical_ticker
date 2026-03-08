@@ -18,7 +18,7 @@ or if loading from pub.dev:
 
 ```yaml
 dependencies:
-  updatable_vertical_ticker: ^1.1.2
+  updatable_vertical_ticker: ^1.1.3
 ```
 
 or (better) run this command:

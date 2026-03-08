@@ -46,6 +46,7 @@ class _UpdatableVerticalTickerExamplePageState
   int seconds = 0;
   bool initialized = false;
   bool showLedVariant = false;
+  bool enableSmoothScrolling = false;
 
   @override
   void initState() {
@@ -289,6 +290,22 @@ class _UpdatableVerticalTickerExamplePageState
                                   ],
                                 ),
                               ),
+                              if (showLedVariant)
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Checkbox(
+                                      value: enableSmoothScrolling,
+                                      onChanged: (bool? mode) {
+                                        setState(() {
+                                          enableSmoothScrolling =
+                                              !enableSmoothScrolling;
+                                        });
+                                      },
+                                    ),
+                                    Text('smooth scrolling px by px'),
+                                  ],
+                                ),
                             ],
                           ),
                           SizedBox(height: 16.0),
@@ -309,7 +326,7 @@ class _UpdatableVerticalTickerExamplePageState
                                 ),
                               ),
                               SizedBox(
-                                width: 150.0,
+                                width: 250.0,
                                 child: Row(
                                   children: [
                                     Text(
@@ -420,7 +437,11 @@ class _UpdatableVerticalTickerExamplePageState
                                   height: (fontMaxSize * 1.2).toDouble(),
                                   child: Center(
                                     child: Container(
-                                      color: Colors.lightBlueAccent,
+                                      color: showLedVariant
+                                          ? enableSmoothScrolling
+                                              ? Colors.black
+                                              : Colors.grey.shade800
+                                          : Colors.lightBlueAccent,
                                       child: initialized == true &&
                                               updatableText.isNotEmpty
                                           ? showLedVariant
@@ -431,6 +452,8 @@ class _UpdatableVerticalTickerExamplePageState
                                                   texts: updatableText,
                                                   modules: modules,
                                                   useProportionalFont: true,
+                                                  enableSmoothScrolling:
+                                                      enableSmoothScrolling,
                                                   center: true,
                                                   ledSize: ledSize,
                                                   ledGap: ledGap,

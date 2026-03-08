@@ -21,6 +21,9 @@ class UpdatableVerticalLedTicker extends StatefulWidget {
   /// use proportional font with different glyph widths
   final bool useProportionalFont;
 
+  /// enable smooth pixel-precise scrolling (otherwise on false, scroll authentically on ledSize boundary)
+  final bool enableSmoothScrolling;
+
   /// center text
   final bool center;
 
@@ -54,6 +57,7 @@ class UpdatableVerticalLedTicker extends StatefulWidget {
     required this.texts,
     this.modules = 21,
     this.useProportionalFont = false,
+    this.enableSmoothScrolling = false,
     this.center = true,
     this.ledSize = 10.0,
     this.ledGap = 1.0,
@@ -132,6 +136,7 @@ class _UpdatableVerticalLedTickerState
                   empty: emptyBitmap,
                   phase: phase,
                   progress: progress,
+                  enableSmoothScrolling: widget.enableSmoothScrolling,
                   ledSize: widget.ledSize,
                   ledGap: widget.ledGap,
                   onColor: widget.onColor,

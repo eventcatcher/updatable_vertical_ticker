@@ -23,6 +23,9 @@ class LedMatrixPainter extends CustomPainter {
   /// - next progress (0.0 → 1.0)
   final double progress; // 0..1
 
+  /// enable smooth pixel-precise scrolling (otherwise on false, scroll authentically on ledSize boundary)
+  final bool enableSmoothScrolling;
+
   /// led dot size in pixels
   final double ledSize;
 
@@ -42,6 +45,7 @@ class LedMatrixPainter extends CustomPainter {
     required this.empty,
     required this.phase,
     this.progress = 0.0,
+    this.enableSmoothScrolling = false,
     this.ledSize = 10.0,
     this.ledGap = 1.0,
     this.onColor = Colors.red,
@@ -51,6 +55,9 @@ class LedMatrixPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final double totalHeight = ledSize * 8;
+    final double offsetY = enableSmoothScrolling
+        ? progress * totalHeight
+        : (progress * totalHeight / ledSize).toInt() * ledSize;
 
     canvas.clipRect(Rect.fromLTWH(0, 0, size.width, totalHeight));
 
@@ -58,12 +65,12 @@ class LedMatrixPainter extends CustomPainter {
     switch (phase) {
       case TickerPhase.entering:
         canvas.save();
-        canvas.translate(0, -progress * totalHeight);
+        canvas.translate(0, -offsetY);
         _drawBitmap(canvas, empty);
         canvas.restore();
 
         canvas.save();
-        canvas.translate(0, totalHeight - progress * totalHeight);
+        canvas.translate(0, totalHeight - offsetY);
         _drawBitmap(canvas, current);
         canvas.restore();
         break;
@@ -75,13 +82,13 @@ class LedMatrixPainter extends CustomPainter {
         break;
       case TickerPhase.exiting:
         canvas.save();
-        canvas.translate(0, -progress * totalHeight);
+        canvas.translate(0, -offsetY);
         _drawBitmap(canvas, current);
         canvas.restore();
 
         if (next != null) {
           canvas.save();
-          canvas.translate(0, totalHeight - progress * totalHeight);
+          canvas.translate(0, totalHeight - offsetY);
           _drawBitmap(canvas, next!);
           canvas.restore();
         }
