@@ -1,3 +1,6 @@
+## 1.1.4
+\- height correction to preventing the truncation of font descenders
+
 ## 1.1.3
 - add enableSmoothScrolling option to LED variant to enable smooth pixel-precise scrolling (otherwise on false, scroll authentically on ledSize boundary) which means LED dot by dot
 

@@ -200,7 +200,7 @@ class _UpdatableVerticalTickerState extends State<UpdatableVerticalTicker>
       textDirection: TextDirection.ltr,
     )..layout();
 
-    final double lineHeight = tp.height;
+    final double lineHeight = tp.height + 2;
 
     if (widget.getMaxWidth != null) {
       double lineWidth = maxLineWidth;

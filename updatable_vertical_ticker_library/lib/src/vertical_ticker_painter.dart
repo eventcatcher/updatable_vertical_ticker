@@ -37,7 +37,7 @@ class VerticalTickerPainter extends CustomPainter {
     final double lineHeight = _measureLineHeight();
 
     canvas.save();
-    canvas.clipRect(Rect.fromLTWH(0, 0, size.width, lineHeight));
+    canvas.clipRect(Rect.fromLTWH(0, 0, size.width, lineHeight + 2));
 
     if (currentText != null) {
       final TextPainter tp = _painter(currentText!);
