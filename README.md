@@ -68,7 +68,7 @@ or if loading from pub.dev:
 
 ```yaml
 dependencies:
-  updatable_vertical_ticker: ^1.1.1
+  updatable_vertical_ticker: ^1.1.5
 ```
 
 ### Running the Sample App

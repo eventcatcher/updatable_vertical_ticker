@@ -1,3 +1,6 @@
+## 1.1.5
+\- use of round dots (not a square with rounded corners)
+
 ## 1.1.4
 \- height correction to preventing the truncation of font descenders
 

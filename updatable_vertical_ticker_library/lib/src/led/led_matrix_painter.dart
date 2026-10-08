@@ -104,18 +104,23 @@ class LedMatrixPainter extends CustomPainter {
 
   // draw bitmap on the canvas
   void _drawBitmap(Canvas canvas, LedBitmap bitmap) {
+    final Paint onPaint = Paint()
+      ..color = onColor
+      ..isAntiAlias = true;
+    final Paint offPaint = Paint()
+      ..color = offColor
+      ..isAntiAlias = true;
+
+    // round dots: circle centered in its cell, diameter = ledSize - ledGap
+    final double radius = (ledSize - ledGap) / 2;
+    final double half = ledSize / 2;
+
     for (int row = 0; row < bitmap.height; row++) {
       for (int col = 0; col < bitmap.width; col++) {
-        final Paint paint = Paint()
-          ..color = bitmap.pixels[row][col] ? onColor : offColor;
-
-        final double dx = col * ledSize;
-        final double dy = row * ledSize;
-        final Rect rect = Rect.fromLTWH(dx + ledGap / 2, dy + ledGap / 2,
-            ledSize - ledGap, ledSize - ledGap);
-        canvas.drawRRect(
-            RRect.fromRectAndRadius(rect, Radius.circular(ledSize * 0.3)),
-            paint);
+        final Offset center =
+            Offset(col * ledSize + half, row * ledSize + half);
+        canvas.drawCircle(
+            center, radius, bitmap.pixels[row][col] ? onPaint : offPaint);
       }
     }
   }
